@@ -1,0 +1,30 @@
+on peut :
+- charger une cinéscénie existante
+- modifier une cinéscénie
+- créer une nouvelle cinéscénie
+
+
+On cinescenie loading:
+- time code setting
+- start
+- pause
+- stop cinéscenie
+- modify audio count
+
+
+ui refresh: QObject::startTimer
+
+
+Event:
+- text
+- time
+- colors (bg/fg)
+- announce (y/n)
+- count (3 triggers + final countdown)
+
+
+TODO
+- build the window title according to the current program state (really relevant?)
+- dark theme
+- open nvm file from OS
+- on editor closing, save on request
