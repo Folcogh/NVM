@@ -26,3 +26,4 @@ Event:
 TODO
 - dark theme
 - open nvm file from OS
+- add sound choice in event dialog + event serialization
