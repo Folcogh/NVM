@@ -53,7 +53,11 @@ EditCinescenie::~EditCinescenie()
 //
 void EditCinescenie::editNewCinescenie()
 {
+    // Clear the table
+    deleteEvents();
     ui->TableEvents->setRowCount(0);
+
+    // Some settings
     this->Filename.clear();
     this->FileModified = false;
     updateUI();
@@ -78,10 +82,9 @@ bool EditCinescenie::editCinescenie(QString filename)
 
     // Create the associated stream
     QDataStream stream(&file);
-    Event* event;
     while (!stream.atEnd()) {
         // Create an event, fill it with stream data, and check for success
-        event = new Event;
+        Event* event = new Event;
         stream >> *event;
         if (stream.status() != QDataStream::Ok) {
             QMessageBox::critical(this, tr("Erreur"), QString("Erreur en lisant le fichier %1").arg(filename));
@@ -119,8 +122,18 @@ void EditCinescenie::buttonCloseClicked()
         // if the user doesn't want, just close
         // else cancel closing
         if (ret == QMessageBox::Yes) {
-
-            emit editCinescenieClosed();
+            if (this->Filename.isEmpty()) {
+                // No filename defined, simulate a "Save As" procedure
+                if (buttonSaveAsClicked()) {
+                    emit editCinescenieClosed();
+                }
+            }
+            else {
+                // A filename exists, try to save directly
+                if (buttonSaveClicked()) {
+                    emit editCinescenieClosed();
+                }
+            }
         }
         if (ret == QMessageBox::No) {
             emit editCinescenieClosed();

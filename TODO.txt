@@ -24,7 +24,5 @@ Event:
 
 
 TODO
-- build the window title according to the current program state (really relevant?)
 - dark theme
 - open nvm file from OS
-- on editor closing, save on request
