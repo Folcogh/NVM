@@ -1,6 +1,7 @@
 #ifndef EXECCINESCENIE_HPP
 #define EXECCINESCENIE_HPP
 
+#include <QTime>
 #include <QWidget>
 
 namespace Ui {
@@ -19,9 +20,13 @@ public:
 private:
     Ui::ExecCinescenie* ui;
     bool Started = false;
+    QTime StartTime;
 
     void deleteEvents();
+    void buttonStartClicked();
     void buttonCloseClicked();
+
+    void timerEvent(QTimerEvent* event);
 
 signals:
     void execCinescenieClosed();
@@ -31,5 +36,8 @@ signals:
 #define COLUMN_TIMECODE 0
 #define COLUMN_REMAINING 1
 #define COLUMN_MESSAGE 2
+
+// Interval of refresh timer (in ms)
+#define INTERVAL_UI_TIMER 200
 
 #endif // EXECCINESCENIE_HPP

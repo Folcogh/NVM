@@ -20,10 +20,11 @@ class EditEvent : public QDialog
 public:
     // Event creation/edition
     static Event* createEvent(QWidget* parent);
-    static void editEvent(QWidget* parent, Event* event);
+    static bool editEvent(QWidget* parent, Event* event);
 
 private:
     Ui::EditEvent* ui;
+    bool EventModified;
 
     explicit EditEvent(QWidget* parent);      // Used to create a new event
     EditEvent(QWidget* parent, Event* event); // Used to edit an existing event

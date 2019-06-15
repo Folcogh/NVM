@@ -14,6 +14,8 @@ ExecCinescenie::ExecCinescenie(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // Button connections
+    connect(ui->ButtonStart, &QPushButton::clicked, [this]() { buttonStartClicked(); });
     connect(ui->ButtonClose, &QPushButton::clicked, [this]() { buttonCloseClicked(); });
 }
 
@@ -21,6 +23,13 @@ ExecCinescenie::~ExecCinescenie()
 {
     deleteEvents();
     delete ui;
+}
+
+void ExecCinescenie::deleteEvents()
+{
+    for (int row = 0; row < ui->TableEvents->rowCount(); row++) {
+        delete ui->TableEvents->item(row, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
+    }
 }
 
 bool ExecCinescenie::execCinescenie(QString filename)
@@ -68,9 +77,11 @@ bool ExecCinescenie::execCinescenie(QString filename)
         }
     }
 
-    // Display the timecode setting frame, mask the next event frame
+    // Show the settings frame, hide the execution frame
     ui->FrameDefineTimecode->setVisible(true);
     ui->FrameEvent->setVisible(false);
+    ui->LabelCinescenieName->setText(filename);
+
     return true;
 }
 
@@ -88,9 +99,24 @@ void ExecCinescenie::buttonCloseClicked()
     emit execCinescenieClosed();
 }
 
-void ExecCinescenie::deleteEvents()
+void ExecCinescenie::buttonStartClicked()
 {
-    for (int row = 0; row < ui->TableEvents->rowCount(); row++) {
-        delete ui->TableEvents->item(row, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
-    }
+    // First of all, initialize a QTime with current time, to measure elapsed time from start
+    this->StartTime.start();
+
+    // Start a timer to refresh UI
+    startTimer(INTERVAL_UI_TIMER, Qt::CoarseTimer);
+
+    // UI
+    ui->FrameDefineTimecode->setVisible(false);
+    ui->FrameEvent->setVisible(true);
+
+    // UI settings
+    Event* event = ui->TableEvents->item(0, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
+    ui->LabelNextEventName->setText(event->message());
+    ui->LabelCurrentTimecode->setText(ui->EditTimecode->time().toString());
+}
+
+void ExecCinescenie::timerEvent(QTimerEvent* event)
+{
 }

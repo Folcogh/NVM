@@ -307,7 +307,7 @@ void EditCinescenie::editEvent(int row, int)
 {
     // Get a pointer to the event and edit it
     Event* event = ui->TableEvents->item(row, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
-    EditEvent::editEvent(this, event);
+    this->FileModified = EditEvent::editEvent(this, event);
 
     // Refresh event display
     updateEventDisplay(row);

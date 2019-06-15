@@ -29,6 +29,7 @@ SOURCES += \
         src/EditEvent.cpp \
         src/Event.cpp \
         src/ExecCinescenie.cpp \
+        src/ExecEvent.cpp \
         src/MainWindow.cpp \
         src/main.cpp
 
@@ -37,6 +38,7 @@ HEADERS += \
         src/EditEvent.hpp \
         src/Event.hpp \
         src/ExecCinescenie.hpp \
+        src/ExecEvent.hpp \
         src/MainWindow.hpp \
         src/Nvm.hpp
 

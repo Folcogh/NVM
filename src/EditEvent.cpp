@@ -1,5 +1,9 @@
 #include "EditEvent.hpp"
 #include "ui_EditEvent.h"
+#include <QCheckBox>
+#include <QDateTimeEdit>
+#include <QLineEdit>
+#include <QSpinBox>
 
 //  EditEvent
 //
@@ -8,6 +12,7 @@
 EditEvent::EditEvent(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::EditEvent)
+    , EventModified(false)
 {
     ui->setupUi(this);
 
@@ -36,6 +41,19 @@ EditEvent::EditEvent(QWidget* parent, Event* event)
     ui->CheckSecondAnnounce->setChecked(event->secondAnnounce());
     ui->CheckThirdAnnounce->setChecked(event->thirdAnnounce());
     ui->CheckFinalCountdown->setChecked(event->finalCountdown());
+
+    // Connect inputs changes to the modified flags
+    connect(ui->EditText, &QLineEdit::textEdited, [this]() { this->EventModified = true; });
+    connect(ui->EditTimeCode, &QDateTimeEdit::timeChanged, [this]() { this->EventModified = true; });
+    connect(ui->TimeFirstAnnounce, &QDateTimeEdit::timeChanged, [this]() { this->EventModified = true; });
+    connect(ui->TimeSecondAnnounce, &QDateTimeEdit::timeChanged, [this]() { this->EventModified = true; });
+    connect(ui->TimeThrirdAnnounce, &QDateTimeEdit::timeChanged, [this]() { this->EventModified = true; });
+    connect(
+        ui->SpinboxFinalCountdown, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [this]() { this->EventModified = true; });
+    connect(ui->CheckFirstAnnounce, &QCheckBox::stateChanged, [this]() { this->EventModified = true; });
+    connect(ui->CheckSecondAnnounce, &QCheckBox::stateChanged, [this]() { this->EventModified = true; });
+    connect(ui->CheckThirdAnnounce, &QCheckBox::stateChanged, [this]() { this->EventModified = true; });
+    connect(ui->CheckFinalCountdown, &QCheckBox::stateChanged, [this]() { this->EventModified = true; });
 }
 
 EditEvent::~EditEvent()
@@ -62,12 +80,15 @@ Event* EditEvent::createEvent(QWidget* parent)
 //
 // Edit an event and save data on user validation
 //
-void EditEvent::editEvent(QWidget* parent, Event* event)
+bool EditEvent::editEvent(QWidget* parent, Event* event)
 {
     EditEvent editor(parent, event);
-    if (editor.exec() == QDialog::Accepted) {
-        editor.setEventValues(event);
+    if (editor.exec() == QDialog::Rejected) {
+        return false;
     }
+
+    editor.setEventValues(event); // Useless if the event wasn't modified, but I don't care
+    return editor.EventModified;
 }
 
 //  setEventvalue
