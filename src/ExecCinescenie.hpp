@@ -18,9 +18,18 @@ public:
 
 private:
     Ui::ExecCinescenie* ui;
+    bool Started = false;
+
+    void deleteEvents();
+    void buttonCloseClicked();
 
 signals:
     void execCinescenieClosed();
 };
+
+// Column definition
+#define COLUMN_TIMECODE 0
+#define COLUMN_REMAINING 1
+#define COLUMN_MESSAGE 2
 
 #endif // EXECCINESCENIE_HPP

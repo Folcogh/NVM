@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>234</height>
+    <height>224</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -28,7 +28,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="LabelText">
        <property name="text">
-        <string>Texte:</string>
+        <string>Annonce :</string>
        </property>
       </widget>
      </item>

@@ -26,7 +26,7 @@ EditEvent::EditEvent(QWidget* parent)
 EditEvent::EditEvent(QWidget* parent, Event* event)
     : EditEvent(parent)
 {
-    ui->EditText->setText(event->text());
+    ui->EditText->setText(event->message());
     ui->EditTimeCode->setTime(event->timecode());
     ui->TimeFirstAnnounce->setTime(event->firstAnnounceDelay());
     ui->TimeSecondAnnounce->setTime(event->secondAnnounceDelay());

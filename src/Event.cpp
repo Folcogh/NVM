@@ -5,10 +5,10 @@
 //
 // Fill an event with data. Used on event creation, modification, or when its read from a file
 //
-void Event::setData(QString text, QTime timecode, QTime firstd, QTime secondd, QTime thirdd, int finald, bool first, bool second,
+void Event::setData(QString message, QTime timecode, QTime firstd, QTime secondd, QTime thirdd, int finald, bool first, bool second,
                     bool third, bool final)
 {
-    this->Text                = text;
+    this->Message             = message;
     this->Timecode            = timecode;
     this->FirstAnnounceDelay  = firstd;
     this->SecondAnnounceDelay = secondd;
@@ -26,7 +26,7 @@ void Event::setData(QString text, QTime timecode, QTime firstd, QTime secondd, Q
 //
 QDataStream& operator<<(QDataStream& stream, const Event& event)
 {
-    stream << event.text() << event.timecode() << event.firstAnnounceDelay() << event.secondAnnounceDelay() << event.thirdAnnounceDelay()
+    stream << event.message() << event.timecode() << event.firstAnnounceDelay() << event.secondAnnounceDelay() << event.thirdAnnounceDelay()
            << event.finalCountdownDelay() << event.firstAnnounce() << event.secondAnnounce() << event.thirdAnnounce()
            << event.finalCountdown();
     return stream;
@@ -38,7 +38,7 @@ QDataStream& operator<<(QDataStream& stream, const Event& event)
 //
 QDataStream& operator>>(QDataStream& stream, Event& event)
 {
-    QString text;
+    QString message;
     QTime timecode;
     QTime firstd;
     QTime secondd;
@@ -49,7 +49,7 @@ QDataStream& operator>>(QDataStream& stream, Event& event)
     bool third;
     bool final;
 
-    stream >> text >> timecode >> firstd >> secondd >> thirdd >> finald >> first >> second >> third >> final;
-    event.setData(text, timecode, firstd, secondd, thirdd, finald, first, second, third, final);
+    stream >> message >> timecode >> firstd >> secondd >> thirdd >> finald >> first >> second >> third >> final;
+    event.setData(message, timecode, firstd, secondd, thirdd, finald, first, second, third, final);
     return stream;
 }

@@ -95,17 +95,17 @@
         </attribute>
         <column>
          <property name="text">
-          <string>Heure</string>
+          <string>Time code</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>Annonce</string>
+          <string>Annonce vocale</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>Texte</string>
+          <string>Message</string>
          </property>
         </column>
        </widget>
@@ -152,8 +152,6 @@
     </widget>
    </item>
   </layout>
-  <zorder>BoxEvents</zorder>
-  <zorder>BoxCinescenie</zorder>
  </widget>
  <resources/>
  <connections/>

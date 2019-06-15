@@ -55,6 +55,7 @@ void EditCinescenie::editNewCinescenie()
 {
     // Clear the table
     deleteEvents();
+    ui->TableEvents->clearContents();
     ui->TableEvents->setRowCount(0);
 
     // Some settings
@@ -71,6 +72,7 @@ bool EditCinescenie::editCinescenie(QString filename)
 {
     // Clear the table
     deleteEvents();
+    ui->TableEvents->clearContents();
     ui->TableEvents->setRowCount(0);
 
     // Open the file and check for success
@@ -291,7 +293,7 @@ void EditCinescenie::addEvent(Event* event)
     // Insert items in the table
     ui->TableEvents->setItem(row, COLUMN_TIMECODE, timecode);
     ui->TableEvents->setItem(row, COLUMN_ANNOUNCE, announce);
-    ui->TableEvents->setItem(row, COLUMN_TEXT, text);
+    ui->TableEvents->setItem(row, COLUMN_MESSAGE, text);
 
     // Update items
     updateEventDisplay(row);
@@ -380,5 +382,5 @@ void EditCinescenie::updateEventDisplay(int row)
 
     ui->TableEvents->item(row, COLUMN_TIMECODE)->setText(event->timecode().toString());
     ui->TableEvents->item(row, COLUMN_ANNOUNCE)->setText(event->hasAnnounce() ? tr("oui") : tr("non"));
-    ui->TableEvents->item(row, COLUMN_TEXT)->setText(event->text());
+    ui->TableEvents->item(row, COLUMN_MESSAGE)->setText(event->message());
 }

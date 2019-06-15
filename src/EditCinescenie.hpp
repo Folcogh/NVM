@@ -50,9 +50,6 @@ signals:
 // Column definition
 #define COLUMN_TIMECODE 0
 #define COLUMN_ANNOUNCE 1
-#define COLUMN_TEXT 2
-
-// Event role. Used to store a pointer to the event in the data part of a QTableWidgetItem
-#define EVENT_ROLE Qt::UserRole
+#define COLUMN_MESSAGE 2
 
 #endif // EDITCINESCENIE_HPP
