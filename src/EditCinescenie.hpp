@@ -30,12 +30,13 @@ private:
     QString Filename;
     QString DefaultDirectory;
 
-    void addEvent(Event* event);
-    void editEvent(int row, int);     // Column is useless for us
-    void deleteEvents();              // Delete Event objects associated with each row
-    void updateUI();                  // Refresh UI buttons/labels after event selection or modification
-    void updateEventDisplay(int row); // Refresh the display of an event for a given line
-    bool save(QString filename);      // Save current event list to a file
+    inline Event* nvmEvent(int row) const; // Return a pointer of the event of a given row
+    void addEvent(Event* event);           // Add an event to the table
+    void editEvent(int row, int);          // Column is useless for us
+    void deleteEvents();                   // Delete Event objects associated with each row
+    void updateUI();                       // Refresh UI buttons/labels after event selection or modification
+    void updateEventDisplay(int row);      // Refresh the display of an event for a given line
+    bool save(QString filename);           // Save current event list to a file
     void buttonCloseClicked();
     void buttonAddEventClicked();
     void buttonModifyEventClicked();

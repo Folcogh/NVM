@@ -183,8 +183,9 @@ void EditCinescenie::buttonModifyEventClicked()
 //
 void EditCinescenie::buttonDeleteEventClicked()
 {
+    // Get the current row, delete the associated event, then remove the row
     int row = ui->TableEvents->currentRow();
-    delete ui->TableEvents->item(row, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
+    delete nvmEvent(row);
     ui->TableEvents->removeRow(row);
 
     updateUI();
@@ -258,7 +259,7 @@ bool EditCinescenie::save(QString filename)
 
     // Save all events
     for (int row = 0; row < ui->TableEvents->rowCount(); row++) {
-        stream << *ui->TableEvents->item(row, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
+        stream << *nvmEvent(row);
 
         // Check stream status
         if (stream.status() != QDataStream::Ok) {
@@ -268,6 +269,15 @@ bool EditCinescenie::save(QString filename)
 
     // Success!
     return true;
+}
+
+//  event
+//
+// Return a pointer to the event of a given row. Inlined method
+//
+Event* EditCinescenie::nvmEvent(int row) const
+{
+    return ui->TableEvents->item(row, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
 }
 
 //  addEvent
@@ -305,11 +315,7 @@ void EditCinescenie::addEvent(Event* event)
 //
 void EditCinescenie::editEvent(int row, int)
 {
-    // Get a pointer to the event and edit it
-    Event* event = ui->TableEvents->item(row, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
-    this->FileModified = EditEvent::editEvent(this, event);
-
-    // Refresh event display
+    this->FileModified = EditEvent::editEvent(this, nvmEvent(row));
     updateEventDisplay(row);
     updateUI();
 }
@@ -321,7 +327,7 @@ void EditCinescenie::editEvent(int row, int)
 void EditCinescenie::deleteEvents()
 {
     for (int row = 0; row < ui->TableEvents->rowCount(); row++) {
-        delete ui->TableEvents->item(row, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
+        delete nvmEvent(row);
     }
 }
 
@@ -378,9 +384,7 @@ void EditCinescenie::updateUI()
 //
 void EditCinescenie::updateEventDisplay(int row)
 {
-    Event* event = ui->TableEvents->item(row, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
-
-    ui->TableEvents->item(row, COLUMN_TIMECODE)->setText(event->timecode().toString());
-    ui->TableEvents->item(row, COLUMN_ANNOUNCE)->setText(event->hasAnnounce() ? tr("oui") : tr("non"));
-    ui->TableEvents->item(row, COLUMN_MESSAGE)->setText(event->message());
+    ui->TableEvents->item(row, COLUMN_TIMECODE)->setText(nvmEvent(row)->timecode().toString());
+    ui->TableEvents->item(row, COLUMN_ANNOUNCE)->setText(nvmEvent(row)->hasAnnounce() ? tr("oui") : tr("non"));
+    ui->TableEvents->item(row, COLUMN_MESSAGE)->setText(nvmEvent(row)->message());
 }

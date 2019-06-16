@@ -1,5 +1,4 @@
 #include "ExecCinescenie.hpp"
-#include "Event.hpp"
 #include "Nvm.hpp"
 #include "ui_ExecCinescenie.h"
 #include <QDataStream>
@@ -28,8 +27,13 @@ ExecCinescenie::~ExecCinescenie()
 void ExecCinescenie::deleteEvents()
 {
     for (int row = 0; row < ui->TableEvents->rowCount(); row++) {
-        delete ui->TableEvents->item(row, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
+        delete nvmEvent(row);
     }
+}
+
+Event* ExecCinescenie::nvmEvent(int row) const
+{
+    return ui->TableEvents->item(row, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
 }
 
 bool ExecCinescenie::execCinescenie(QString filename)
@@ -77,10 +81,11 @@ bool ExecCinescenie::execCinescenie(QString filename)
         }
     }
 
-    // Show the settings frame, hide the execution frame
-    ui->FrameDefineTimecode->setVisible(true);
-    ui->FrameEvent->setVisible(false);
-    ui->LabelCinescenieName->setText(filename);
+    // Update UI
+    ui->FrameDefineTimecode->setVisible(true);                      // Show the setting frame, allowing to set the timecode
+    ui->FrameEvent->setVisible(false);                              // Hide the event frame, used while the cinescenie is running
+    ui->LabelCinescenieName->setText(filename);                     // Set the filename of the current cinescenie
+    ui->ButtonStart->setDisabled(ui->TableEvents->rowCount() == 0); // Forbid to start the cinescenie if the event table is empty
 
     return true;
 }
@@ -107,16 +112,31 @@ void ExecCinescenie::buttonStartClicked()
     // Start a timer to refresh UI
     startTimer(INTERVAL_UI_TIMER, Qt::CoarseTimer);
 
+    // Discard events whose timecode < timecode preset. We need that because:
+    // - triggers could happen at start if we compare timecodes with <=
+    // - triggers could be skipped in case of lag, if we compare timecodes with ==
+    // So we compare them with <=, but discard at start the ones which are "in the past"
+    while (nvmEvent(0)->timecode() < ui->EditTimecode->time()) {
+        delete nvmEvent(0);
+        ui->TableEvents->removeRow(0);
+    }
+
+    // Safety check: if all events have been removed, we can't continue
+    if (ui->TableEvents->rowCount() == 0) {
+        return;
+    }
+
     // UI
     ui->FrameDefineTimecode->setVisible(false);
     ui->FrameEvent->setVisible(true);
 
-    // UI settings
-    Event* event = ui->TableEvents->item(0, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
-    ui->LabelNextEventName->setText(event->message());
+    // UI settings. Use the first event to initialize display
+    ui->LabelNextEventName->setText(nvmEvent(0)->message());
     ui->LabelCurrentTimecode->setText(ui->EditTimecode->time().toString());
 }
 
 void ExecCinescenie::timerEvent(QTimerEvent* event)
 {
+    (void)event;
+    // TODO: 200ms event received
 }

@@ -1,6 +1,7 @@
 #ifndef EXECCINESCENIE_HPP
 #define EXECCINESCENIE_HPP
 
+#include "Event.hpp"
 #include <QTime>
 #include <QWidget>
 
@@ -22,6 +23,7 @@ private:
     bool Started = false;
     QTime StartTime;
 
+    Event* nvmEvent(int row) const;
     void deleteEvents();
     void buttonStartClicked();
     void buttonCloseClicked();
