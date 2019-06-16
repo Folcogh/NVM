@@ -22,13 +22,14 @@ private:
     Ui::ExecCinescenie* ui;
     bool Started = false;
     QTime StartTime;
+    int TimerID;
 
     Event* nvmEvent(int row) const;
     void deleteEvents();
     void buttonStartClicked();
     void buttonCloseClicked();
 
-    void timerEvent(QTimerEvent* event);
+    void timerEvent(QTimerEvent*);
 
 signals:
     void execCinescenieClosed();

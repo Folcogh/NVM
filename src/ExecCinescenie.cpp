@@ -57,7 +57,7 @@ bool ExecCinescenie::execCinescenie(QString filename)
         Event* event = new Event;
         stream >> *event;
 
-        // Add the event to the table
+        // Create the widget for each cell
         QTableWidgetItem* timecode  = new QTableWidgetItem(event->timecode().toString());
         QTableWidgetItem* remaining = new QTableWidgetItem;
         QTableWidgetItem* message   = new QTableWidgetItem(event->message());
@@ -106,23 +106,23 @@ void ExecCinescenie::buttonCloseClicked()
 
 void ExecCinescenie::buttonStartClicked()
 {
-    // First of all, initialize a QTime with current time, to measure elapsed time from start
-    this->StartTime.start();
-
-    // Start a timer to refresh UI
-    startTimer(INTERVAL_UI_TIMER, Qt::CoarseTimer);
+    this->StartTime.start(); // Initialize a QTime with current time, to measure elapsed time from start
+    this->TimerID = startTimer(INTERVAL_UI_TIMER, Qt::CoarseTimer); // Start a timer to refresh UI
+    this->Started = true;                                           // We will ask a confirmation before exiting the cinescenie
 
     // Discard events whose timecode < timecode preset. We need that because:
     // - triggers could happen at start if we compare timecodes with <=
     // - triggers could be skipped in case of lag, if we compare timecodes with ==
     // So we compare them with <=, but discard at start the ones which are "in the past"
-    while (nvmEvent(0)->timecode() < ui->EditTimecode->time()) {
+    while ((ui->TableEvents->rowCount() != 0) && (nvmEvent(0)->timecode() < ui->EditTimecode->time())) {
         delete nvmEvent(0);
         ui->TableEvents->removeRow(0);
     }
 
     // Safety check: if all events have been removed, we can't continue
     if (ui->TableEvents->rowCount() == 0) {
+        killTimer(this->TimerID);
+        this->Started = false;
         return;
     }
 
@@ -135,8 +135,46 @@ void ExecCinescenie::buttonStartClicked()
     ui->LabelCurrentTimecode->setText(ui->EditTimecode->time().toString());
 }
 
-void ExecCinescenie::timerEvent(QTimerEvent* event)
+void ExecCinescenie::timerEvent(QTimerEvent*)
 {
-    (void)event;
-    // TODO: 200ms event received
+    // Update current timecode
+    QTime CurrentTC = ui->EditTimecode->time().addMSecs(this->StartTime.elapsed());
+    ui->LabelCurrentTimecode->setText(CurrentTC.toString());
+
+    // Update remaining time for each event
+    // If an event is done, register it for removal
+    int ToBeRemoved = 0;
+    for (int row = 0; row < ui->TableEvents->rowCount(); row++) {
+        int seconds = CurrentTC.secsTo(nvmEvent(row)->timecode());
+        int h       = seconds / 3600;
+        int m       = (seconds % 3600) / 60;
+        int s       = (seconds % 3600) % 60;
+        QTime remaining(h, m, s);
+
+        // Display remaining time if it's valid, else prepare event for removal
+        if (remaining.isValid()) {
+            ui->TableEvents->item(row, COLUMN_REMAINING)->setText(remaining.toString());
+
+            // Update remaining event in the event frame
+            if (row == 0) {
+                ui->LabelNextEventRemaining->setText(remaining.toString());
+                ui->LabelNextEventName->setText(nvmEvent(0)->message());
+            }
+        }
+        else {
+            ToBeRemoved++;
+        }
+    }
+
+    // Remove done events
+    for (; ToBeRemoved > 0; ToBeRemoved--) {
+        delete nvmEvent(0);
+        ui->TableEvents->removeRow(0);
+    }
+
+    // Stop cinescenie execution if all events are in the past
+    if (ui->TableEvents->rowCount() == 0) {
+        this->Started = false;
+        killTimer(this->TimerID);
+    }
 }

@@ -63,7 +63,7 @@
        <item row="2" column="1" rowspan="2">
         <widget class="QCommandLinkButton" name="ButtonLoad">
          <property name="text">
-          <string>Ouvrir</string>
+          <string>Exécuter</string>
          </property>
          <property name="description">
           <string>Exécuter une cinéscénie existante</string>
