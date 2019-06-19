@@ -6,18 +6,19 @@
 // Fill an event with data. Used on event creation, modification, or when its read from a file
 //
 void Event::setData(QString message, QTime timecode, QTime firstd, QTime secondd, QTime thirdd, int finald, bool first, bool second,
-                    bool third, bool final)
+                    bool third, bool final, QString sound)
 {
-    this->Message             = message;
-    this->Timecode            = timecode;
-    this->FirstAnnounceDelay  = firstd;
-    this->SecondAnnounceDelay = secondd;
-    this->ThirdAnnounceDelay  = thirdd;
-    this->FinalCountdownDelay = finald;
-    this->FirstAnnounce       = first;
-    this->SecondAnnounce      = second;
-    this->ThirdAnnounce       = third;
-    this->FinalCountdown      = final;
+    this->Message                 = message;
+    this->Timecode                = timecode;
+    this->FirstAnnouncementDelay  = firstd;
+    this->SecondAnnouncementDelay = secondd;
+    this->ThirdAnnouncementDelay  = thirdd;
+    this->FinalCountdownDelay     = finald;
+    this->FirstAnnouncement       = first;
+    this->SecondAnnouncement      = second;
+    this->ThirdAnnouncement       = third;
+    this->FinalCountdown          = final;
+    this->Sound                   = sound;
 }
 
 //  <<
@@ -26,9 +27,9 @@ void Event::setData(QString message, QTime timecode, QTime firstd, QTime secondd
 //
 QDataStream& operator<<(QDataStream& stream, const Event& event)
 {
-    stream << event.message() << event.timecode() << event.firstAnnounceDelay() << event.secondAnnounceDelay() << event.thirdAnnounceDelay()
-           << event.finalCountdownDelay() << event.firstAnnounce() << event.secondAnnounce() << event.thirdAnnounce()
-           << event.finalCountdown();
+    stream << event.message() << event.timecode() << event.firstAnnouncementDelay() << event.secondAnnouncementDelay()
+           << event.thirdAnnouncementDelay() << event.finalCountdownDelay() << event.firstAnnouncement() << event.secondAnnouncement()
+           << event.thirdAnnouncement() << event.finalCountdown() << event.sound();
     return stream;
 }
 
@@ -48,8 +49,9 @@ QDataStream& operator>>(QDataStream& stream, Event& event)
     bool second;
     bool third;
     bool final;
+    QString sound;
 
-    stream >> message >> timecode >> firstd >> secondd >> thirdd >> finald >> first >> second >> third >> final;
-    event.setData(message, timecode, firstd, secondd, thirdd, finald, first, second, third, final);
+    stream >> message >> timecode >> firstd >> secondd >> thirdd >> finald >> first >> second >> third >> final >> sound;
+    event.setData(message, timecode, firstd, secondd, thirdd, finald, first, second, third, final, sound);
     return stream;
 }

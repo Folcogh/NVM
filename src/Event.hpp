@@ -7,7 +7,7 @@
 
 //  Event
 //
-// This class contains event data: timecode, text to display, vocal announces
+// This class contains event data: timecode, text to display, vocal announcements
 //
 class Event
 {
@@ -15,33 +15,35 @@ public:
     // Getters
     QString message() const { return this->Message; }
     QTime timecode() const { return this->Timecode; }
-    QTime firstAnnounceDelay() const { return this->FirstAnnounceDelay; }
-    QTime secondAnnounceDelay() const { return this->SecondAnnounceDelay; }
-    QTime thirdAnnounceDelay() const { return this->ThirdAnnounceDelay; }
+    QTime firstAnnouncementDelay() const { return this->FirstAnnouncementDelay; }
+    QTime secondAnnouncementDelay() const { return this->SecondAnnouncementDelay; }
+    QTime thirdAnnouncementDelay() const { return this->ThirdAnnouncementDelay; }
     int finalCountdownDelay() const { return this->FinalCountdownDelay; }
-    bool firstAnnounce() const { return this->FirstAnnounce; }
-    bool secondAnnounce() const { return this->SecondAnnounce; }
-    bool thirdAnnounce() const { return this->ThirdAnnounce; }
+    bool firstAnnouncement() const { return this->FirstAnnouncement; }
+    bool secondAnnouncement() const { return this->SecondAnnouncement; }
+    bool thirdAnnouncement() const { return this->ThirdAnnouncement; }
     bool finalCountdown() const { return this->FinalCountdown; }
+    QString sound() const { return this->Sound; }
 
     // Setter
     void setData(QString message, QTime timecode, QTime firstd, QTime secondd, QTime thirdd, int finald, bool first, bool second,
-                 bool third, bool final);
+                 bool third, bool final, QString sound);
 
-    // Shortcut used to display announce status in a table
-    bool hasAnnounce() const { return firstAnnounce() || secondAnnounce() || thirdAnnounce() || finalCountdown(); }
+    // Shortcut used to display announcement status in a table
+    bool hasAnnounce() const { return firstAnnouncement() || secondAnnouncement() || thirdAnnouncement() || finalCountdown(); }
 
 private:
     QString Message;          // Text displayed and read
     QTime Timecode;           // Time where event is triggered
-    QTime FirstAnnounceDelay; // Some delays before the announce. May be not null even if the corresponding boolean is true
-    QTime SecondAnnounceDelay;
-    QTime ThirdAnnounceDelay;
-    int FinalCountdownDelay; // Countdown announce, in seconds
-    bool FirstAnnounce;      // True if the announce must be emitted
-    bool SecondAnnounce;
-    bool ThirdAnnounce;
+    QTime FirstAnnouncementDelay; // Some delays before the announcement. May be not null even if the corresponding boolean is true
+    QTime SecondAnnouncementDelay;
+    QTime ThirdAnnouncementDelay;
+    int FinalCountdownDelay; // Countdown announcmente, in seconds
+    bool FirstAnnouncement;  // True if the announcement must be emitted
+    bool SecondAnnouncement;
+    bool ThirdAnnouncement;
     bool FinalCountdown;
+    QString Sound;
 };
 
 // Serialization

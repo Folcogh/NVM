@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,20 +25,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++14
 
 SOURCES += \
+        src/AnnouncementSound.cpp \
         src/EditCinescenie.cpp \
         src/EditEvent.cpp \
         src/Event.cpp \
         src/ExecCinescenie.cpp \
-        src/ExecEvent.cpp \
         src/MainWindow.cpp \
         src/main.cpp
 
 HEADERS += \
+        src/AnnouncementSound.hpp \
         src/EditCinescenie.hpp \
         src/EditEvent.hpp \
         src/Event.hpp \
         src/ExecCinescenie.hpp \
-        src/ExecEvent.hpp \
         src/MainWindow.hpp \
         src/Nvm.hpp
 
@@ -55,3 +55,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     TODO.txt
+
+RESOURCES += \
+    resources/countdown/countdown.qrc

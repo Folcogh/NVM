@@ -1,0 +1,34 @@
+<RCC>
+    <qresource prefix="/">
+        <file>1.mp3</file>
+        <file>2.mp3</file>
+        <file>3.mp3</file>
+        <file>4.mp3</file>
+        <file>5.mp3</file>
+        <file>6.mp3</file>
+        <file>7.mp3</file>
+        <file>8.mp3</file>
+        <file>9.mp3</file>
+        <file>10.mp3</file>
+        <file>11.mp3</file>
+        <file>12.mp3</file>
+        <file>13.mp3</file>
+        <file>14.mp3</file>
+        <file>15.mp3</file>
+        <file>16.mp3</file>
+        <file>17.mp3</file>
+        <file>18.mp3</file>
+        <file>19.mp3</file>
+        <file>20.mp3</file>
+        <file>21.mp3</file>
+        <file>22.mp3</file>
+        <file>23.mp3</file>
+        <file>24.mp3</file>
+        <file>25.mp3</file>
+        <file>26.mp3</file>
+        <file>27.mp3</file>
+        <file>28.mp3</file>
+        <file>29.mp3</file>
+        <file>30.mp3</file>
+    </qresource>
+</RCC>

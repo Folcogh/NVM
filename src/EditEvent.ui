@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>224</height>
+    <height>273</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -59,76 +59,110 @@
     </layout>
    </item>
    <item>
-    <widget class="QGroupBox" name="BoxAnnounce">
+    <widget class="QGroupBox" name="BoxAnnouncement">
      <property name="title">
       <string>Annonces vocales</string>
      </property>
      <property name="checked">
       <bool>false</bool>
      </property>
-     <layout class="QFormLayout" name="formLayout">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="CheckFirstAnnounce">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QFormLayout" name="FormAnnouncement">
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="CheckFirstAnnouncement">
+          <property name="text">
+           <string>Première annonce à :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QTimeEdit" name="TimeFirstAnnouncement">
+          <property name="frame">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="CheckSecondAnnouncement">
+          <property name="text">
+           <string>Deuxième annonce à :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QTimeEdit" name="TimeSecondAnnouncement">
+          <property name="frame">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="CheckThirdAnnouncement">
+          <property name="text">
+           <string>Troisième annonce à :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QTimeEdit" name="TimeThrirdAnnouncement">
+          <property name="frame">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="CheckFinalCountdown">
+          <property name="text">
+           <string>Décompte final :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QSpinBox" name="SpinboxFinalCountdown">
+          <property name="frame">
+           <bool>false</bool>
+          </property>
+          <property name="suffix">
+           <string> secondes</string>
+          </property>
+          <property name="minimum">
+           <number>3</number>
+          </property>
+          <property name="maximum">
+           <number>30</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="HLayoutSound">
+        <item>
+         <widget class="QLabel" name="LabelSound">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Son :</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="ComboSound"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="LabelSoundNotExisting">
         <property name="text">
-         <string>Première annonce à :</string>
+         <string>missing sound warning</string>
         </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QTimeEdit" name="TimeFirstAnnounce">
-        <property name="frame">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="CheckSecondAnnounce">
-        <property name="text">
-         <string>Deuxième annonce à :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QTimeEdit" name="TimeSecondAnnounce">
-        <property name="frame">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="CheckThirdAnnounce">
-        <property name="text">
-         <string>Troisième annonce à :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QTimeEdit" name="TimeThrirdAnnounce">
-        <property name="frame">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="CheckFinalCountdown">
-        <property name="text">
-         <string>Décompte final :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QSpinBox" name="SpinboxFinalCountdown">
-        <property name="frame">
-         <bool>false</bool>
-        </property>
-        <property name="suffix">
-         <string> secondes</string>
-        </property>
-        <property name="minimum">
-         <number>3</number>
-        </property>
-        <property name="maximum">
-         <number>60</number>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>

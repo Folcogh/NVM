@@ -1,10 +1,11 @@
 #include "MainWindow.hpp"
 #include <QApplication>
 
+#include "AnnouncementSound.hpp"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
     MainWindow w;
 
     // If the app was launched through file association, exec the cinescenie
@@ -14,5 +15,9 @@ int main(int argc, char *argv[])
 
     // Display and execute the app
     w.show();
-    return a.exec();
+
+    AnnouncementSound::instance(); // TODO: remove that, used just for debugging
+    int ret = a.exec();
+    AnnouncementSound::release();
+    return ret;
 }

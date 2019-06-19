@@ -29,6 +29,7 @@ private:
     explicit EditEvent(QWidget* parent);      // Used to create a new event
     EditEvent(QWidget* parent, Event* event); // Used to edit an existing event
     ~EditEvent();
+    void comboTextChanged();
 
     // Grab event data from the UI
     void setEventValues(Event* event);

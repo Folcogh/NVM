@@ -214,9 +214,9 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="HLayoutVocalAnnounce">
+    <layout class="QHBoxLayout" name="HLayoutVocalAnnouncement">
      <item>
-      <spacer name="HSpacerVocalAnnounce">
+      <spacer name="HSpacerVocalAnnouncement">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -229,7 +229,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QCheckBox" name="CheckboxVocalAnnounce">
+      <widget class="QCheckBox" name="CheckboxVocalAnnouncement">
        <property name="text">
         <string>Activer les annonces vocales</string>
        </property>
