@@ -38,9 +38,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+//  loadCinescenie
+//
+// Called by main.cpp when NVM is launched through a nvm file
+//
 void MainWindow::loadCinescenie(QString filename)
 {
-    (void)filename;
+    // Try to open it, display it in case of success
+    if (this->WidgetExec->execCinescenie(filename)) {
+        this->WidgetExec->setVisible(true);
+        ui->WidgetChoice->setVisible(false);
+    }
 }
 
 void MainWindow::displayChoice()
@@ -65,11 +73,7 @@ void MainWindow::loadCinescenieTriggered()
         return;
     }
 
-    // Try to open it, display it in case of success
-    if (this->WidgetExec->execCinescenie(filename)) {
-        this->WidgetExec->setVisible(true);
-        ui->WidgetChoice->setVisible(false);
-    }
+    loadCinescenie(filename);
 }
 
 void MainWindow::modifyCinescenieTriggered()
