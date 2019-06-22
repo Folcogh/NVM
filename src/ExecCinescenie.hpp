@@ -24,7 +24,7 @@ private:
     QTime StartTime;
     int TimerID;
 
-    Event* nvmEvent(int row) const;
+    inline Event* nvmEvent(int row) const;
     void deleteEvents();
     void buttonStartClicked();
     void buttonCloseClicked();
