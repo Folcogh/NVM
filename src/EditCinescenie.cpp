@@ -341,9 +341,6 @@ void EditCinescenie::updateUI()
     // Sort the table, based on time code
     ui->TableEvents->sortItems(COLUMN_TIMECODE);
 
-    // Clear selected items to get a cleaner table
-    ui->TableEvents->clearSelection();
-
     // Update table buttons
     if (ui->TableEvents->selectedItems().isEmpty()) {
         ui->ButtonModifyEvent->setDisabled(true);
