@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     // Display and execute the app
     w.show();
 
-    AnnouncementSound::instance(); // TODO: remove that, used just for debugging
+    AnnouncementSound::instance(); // TODO: remove that, used only for debugging
     int ret = a.exec();
     AnnouncementSound::release();
     return ret;

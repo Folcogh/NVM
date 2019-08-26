@@ -5,6 +5,8 @@
 #include <QComboBox>
 #include <QDateTimeEdit>
 #include <QLineEdit>
+#include <QListWidget>
+#include <QListWidgetItem>
 #include <QSpinBox>
 
 //  EditEvent
@@ -29,7 +31,14 @@ EditEvent::EditEvent(QWidget* parent)
     ui->ComboSound->addItems(AnnouncementSound::instance()->soundNames());
 
     // Hide the missing sound warning message
-    ui->LabelSoundNotExisting->setText("");
+    ui->LabelSoundNotExisting->setVisible(false);
+
+    // Connect announcements list buttons
+    connect(ui->ButtonAddAnnouncement, &QPushButton::clicked, [this]() { addAnnouncementClicked(); });
+    connect(ui->ButtonRemoveAnnouncement, &QPushButton::clicked, [this]() { removeAnnouncementClicked(); });
+
+    // Connect announcements list widget
+    connect(ui->ListAnnouncement, &QListWidget::itemSelectionChanged, [this] { listSelectionChanged(); });
 }
 
 //  EditEvent
@@ -40,38 +49,37 @@ EditEvent::EditEvent(QWidget* parent, Event* event)
     : EditEvent(parent)
 {
     // Fill the UI
-    ui->EditText->setText(event->message());
+    ui->LineeditEvent->setText(event->message());
     ui->EditTimeCode->setTime(event->timecode());
-    ui->TimeFirstAnnouncement->setTime(event->firstAnnouncementDelay());
-    ui->TimeSecondAnnouncement->setTime(event->secondAnnouncementDelay());
-    ui->TimeThrirdAnnouncement->setTime(event->thirdAnnouncementDelay());
-    ui->SpinboxFinalCountdown->setValue(event->finalCountdownDelay());
-    ui->CheckFirstAnnouncement->setChecked(event->firstAnnouncement());
-    ui->CheckSecondAnnouncement->setChecked(event->secondAnnouncement());
-    ui->CheckThirdAnnouncement->setChecked(event->thirdAnnouncement());
-    ui->CheckFinalCountdown->setChecked(event->finalCountdown());
+    if (event->hasAnnounce()) {
+        // Enable the sound box
+        ui->BoxAnnouncement->setChecked(true);
 
-    // If the announcement sound file doesn't exist, add it to the list, and make the warning message visible
-    if (!AnnouncementSound::instance()->exists(event->sound())) {
-        ui->ComboSound->addItem(event->sound());
-        ui->LabelSoundNotExisting->setText(tr("Attention, le son de cet énènement n'existe pas !"));
+        // Set the final countdown value
+        ui->SpinboxFinalCountdown->setValue(event->countdown());
+
+        // Add the announcements in the list
+        QList<QTime> list = event->announcements();
+        for (int i = 0; i < list.size(); i++) {
+            ui->ListAnnouncement->addItem(list.at(i).toString());
+        }
+
+        // If the announcement sound file doesn't exist, add it to the list, and make the warning message visible
+        if (!AnnouncementSound::instance()->exists(event->sound())) {
+            ui->ComboSound->addItem(event->sound());
+            ui->LabelSoundNotExisting->setVisible(true);
+        }
+        ui->ComboSound->setCurrentText(event->sound());
     }
-    ui->ComboSound->setCurrentText(event->sound());
 
     // Connections needed to know if an event changed during edition
-    connect(ui->EditText, &QLineEdit::textEdited, [this]() { this->EventModified = true; });
+    // Announcement list modifications are notified when the Add/Delete buttons are pressed
+    connect(ui->LineeditEvent, &QLineEdit::textEdited, [this]() { this->EventModified = true; });
     connect(ui->EditTimeCode, &QDateTimeEdit::timeChanged, [this]() { this->EventModified = true; });
-    connect(ui->TimeFirstAnnouncement, &QDateTimeEdit::timeChanged, [this]() { this->EventModified = true; });
-    connect(ui->TimeSecondAnnouncement, &QDateTimeEdit::timeChanged, [this]() { this->EventModified = true; });
-    connect(ui->TimeThrirdAnnouncement, &QDateTimeEdit::timeChanged, [this]() { this->EventModified = true; });
-    connect(
-        ui->SpinboxFinalCountdown, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [this]() { this->EventModified = true; });
-    connect(ui->CheckFirstAnnouncement, &QCheckBox::stateChanged, [this]() { this->EventModified = true; });
-    connect(ui->CheckSecondAnnouncement, &QCheckBox::stateChanged, [this]() { this->EventModified = true; });
-    connect(ui->CheckThirdAnnouncement, &QCheckBox::stateChanged, [this]() { this->EventModified = true; });
-    connect(ui->CheckFinalCountdown, &QCheckBox::stateChanged, [this]() { this->EventModified = true; });
     connect(
         ui->ComboSound, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::currentTextChanged), [this]() { comboTextChanged(); });
+    connect(
+        ui->SpinboxFinalCountdown, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [this]() { this->EventModified = true; });
 }
 
 EditEvent::~EditEvent()
@@ -81,7 +89,8 @@ EditEvent::~EditEvent()
 
 //  createEvent
 //
-// Create an event object and fill it it user validates the dialog
+// Create a new event
+// Return a pointer to the event if the dialog was accepted, else nullptr
 //
 Event* EditEvent::createEvent(QWidget* parent)
 {
@@ -89,7 +98,7 @@ Event* EditEvent::createEvent(QWidget* parent)
     EditEvent editor(parent);
     if (editor.exec() == QDialog::Accepted) {
         event = new Event;
-        editor.setEventValues(event);
+        editor.readEventFromUI(event);
     }
     return event;
 }
@@ -97,35 +106,45 @@ Event* EditEvent::createEvent(QWidget* parent)
 //  editEvent
 //
 // Edit an event and save data on user validation
+// Return true if the event was modified
 //
 bool EditEvent::editEvent(QWidget* parent, Event* event)
 {
     EditEvent editor(parent, event);
-    if (editor.exec() == QDialog::Rejected) {
-        return false;
+
+    // Save new event values if the dialog was accepted
+    if (editor.exec() == QDialog::Accepted) {
+        editor.readEventFromUI(event);
     }
 
-    editor.setEventValues(event); // Useless if the event wasn't modified, but I don't care
     return editor.EventModified;
 }
 
-//  setEventvalue
+//  readEventFromUI
 //
 // Grab data from UI to fill an event object
 //
-void EditEvent::setEventValues(Event* event)
+void EditEvent::readEventFromUI(Event* event)
 {
-    event->setData(ui->EditText->text(),
-                   ui->EditTimeCode->time(),
-                   ui->TimeFirstAnnouncement->time(),
-                   ui->TimeSecondAnnouncement->time(),
-                   ui->TimeThrirdAnnouncement->time(),
-                   ui->SpinboxFinalCountdown->value(),
-                   ui->CheckFirstAnnouncement->isChecked(),
-                   ui->CheckSecondAnnouncement->isChecked(),
-                   ui->CheckThirdAnnouncement->isChecked(),
-                   ui->CheckFinalCountdown->isChecked(),
-                   ui->ComboSound->currentText());
+    // If the announcement box is unchecked, don't save any sound information
+    if (!ui->BoxAnnouncement->isChecked()) {
+        event->setData(ui->LineeditEvent->text(), ui->EditTimeCode->time());
+    }
+
+    // Else save all sound infos
+    else {
+        // Build the QTime<QList> object with the announcement time list
+        QList<QTime> announcements;
+        for (int i = 0; i < ui->ListAnnouncement->count(); i++) {
+            announcements << QTime::fromString(ui->ListAnnouncement->item(i)->text());
+        }
+
+        event->setData(ui->LineeditEvent->text(),
+                       ui->EditTimeCode->time(),
+                       ui->ComboSound->currentText(),
+                       ui->SpinboxFinalCountdown->value(),
+                       announcements);
+    }
 }
 
 //  comboTextChanged
@@ -135,7 +154,25 @@ void EditEvent::setEventValues(Event* event)
 void EditEvent::comboTextChanged()
 {
     this->EventModified = true;
-    QString text =
-        AnnouncementSound::instance()->exists(ui->ComboSound->currentText()) ? "" : tr("Attention, le son de cet énènement n'existe pas !");
-    ui->LabelSoundNotExisting->setText(text);
+    bool exist          = AnnouncementSound::instance()->exists(ui->ComboSound->currentText());
+    ui->LabelSoundNotExisting->setVisible(!exist);
+}
+
+void EditEvent::addAnnouncementClicked()
+{
+    QListWidgetItem* item = new QListWidgetItem(ui->EditAnnouncementTime->time().toString());
+    ui->ListAnnouncement->addItem(item);
+    this->EventModified = true;
+}
+
+void EditEvent::removeAnnouncementClicked()
+{
+    delete ui->ListAnnouncement->selectedItems().at(0);
+    this->EventModified = true;
+}
+
+// Disable remove button if no selection
+void EditEvent::listSelectionChanged()
+{
+    ui->ButtonRemoveAnnouncement->setEnabled(!ui->ListAnnouncement->selectedItems().isEmpty());
 }

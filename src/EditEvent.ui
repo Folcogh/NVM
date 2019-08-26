@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
-    <height>273</height>
+    <width>410</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -22,31 +22,35 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <layout class="QFormLayout" name="FormLayoutEvent">
-     <item row="0" column="0">
-      <widget class="QLabel" name="LabelText">
+    <layout class="QHBoxLayout" name="HLayoutEvent">
+     <item>
+      <widget class="QLabel" name="LabelEvent">
        <property name="text">
         <string>Annonce :</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="EditText">
+     <item>
+      <widget class="QLineEdit" name="LineeditEvent">
        <property name="frame">
         <bool>false</bool>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="HLayoutTimecode">
+     <item>
       <widget class="QLabel" name="LabelTimeCode">
        <property name="text">
         <string>Time code :</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item>
       <widget class="QTimeEdit" name="EditTimeCode">
        <property name="frame">
         <bool>false</bool>
@@ -56,86 +60,33 @@
        </property>
       </widget>
      </item>
+     <item>
+      <spacer name="HSpacerTimecode">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
     </layout>
    </item>
    <item>
     <widget class="QGroupBox" name="BoxAnnouncement">
      <property name="title">
-      <string>Annonces vocales</string>
+      <string>Annonce vocale</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
      </property>
      <property name="checked">
       <bool>false</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <layout class="QFormLayout" name="FormAnnouncement">
-        <item row="0" column="0">
-         <widget class="QCheckBox" name="CheckFirstAnnouncement">
-          <property name="text">
-           <string>Première annonce à :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QTimeEdit" name="TimeFirstAnnouncement">
-          <property name="frame">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="CheckSecondAnnouncement">
-          <property name="text">
-           <string>Deuxième annonce à :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QTimeEdit" name="TimeSecondAnnouncement">
-          <property name="frame">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QCheckBox" name="CheckThirdAnnouncement">
-          <property name="text">
-           <string>Troisième annonce à :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QTimeEdit" name="TimeThrirdAnnouncement">
-          <property name="frame">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QCheckBox" name="CheckFinalCountdown">
-          <property name="text">
-           <string>Décompte final :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QSpinBox" name="SpinboxFinalCountdown">
-          <property name="frame">
-           <bool>false</bool>
-          </property>
-          <property name="suffix">
-           <string> secondes</string>
-          </property>
-          <property name="minimum">
-           <number>3</number>
-          </property>
-          <property name="maximum">
-           <number>30</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
       <item>
        <layout class="QHBoxLayout" name="HLayoutSound">
         <item>
@@ -154,16 +105,133 @@
         <item>
          <widget class="QComboBox" name="ComboSound"/>
         </item>
+        <item>
+         <widget class="QLabel" name="LabelSoundNotExisting">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Le son n'existe pas !</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="HSpacerSound">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
        </layout>
       </item>
       <item>
-       <widget class="QLabel" name="LabelSoundNotExisting">
-        <property name="text">
-         <string>missing sound warning</string>
+       <layout class="QHBoxLayout" name="HLayoutFinalCountdown">
+        <item>
+         <widget class="QLabel" name="LabelFinalCountdown">
+          <property name="text">
+           <string>Décompte final :</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="SpinboxFinalCountdown">
+          <property name="frame">
+           <bool>false</bool>
+          </property>
+          <property name="specialValueText">
+           <string>Aucun</string>
+          </property>
+          <property name="suffix">
+           <string> secondes</string>
+          </property>
+          <property name="minimum">
+           <number>0</number>
+          </property>
+          <property name="maximum">
+           <number>60</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="HSpacerFinalCountdown">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="BoxAnnouncement_2">
+        <property name="title">
+         <string>Rappels de l'annonce</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <layout class="QHBoxLayout" name="HLAyoutNewAnnouncement">
+           <item>
+            <widget class="QLabel" name="LabelNewAnnouncement">
+             <property name="text">
+              <string>Nouveau rappel :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTimeEdit" name="EditAnnouncementTime"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="ButtonAddAnnouncement">
+             <property name="text">
+              <string>Ajouter</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="HSpacerAnnouncement">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="ButtonRemoveAnnouncement">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Supprimer</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QListWidget" name="ListAnnouncement"/>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>

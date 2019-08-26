@@ -1,6 +1,7 @@
 #ifndef EVENT_HPP
 #define EVENT_HPP
 
+#include <QList>
 #include <QMetaType>
 #include <QString>
 #include <QTime>
@@ -13,37 +14,28 @@ class Event
 {
 public:
     // Getters
-    QString message() const { return this->Message; }
-    QTime timecode() const { return this->Timecode; }
-    QTime firstAnnouncementDelay() const { return this->FirstAnnouncementDelay; }
-    QTime secondAnnouncementDelay() const { return this->SecondAnnouncementDelay; }
-    QTime thirdAnnouncementDelay() const { return this->ThirdAnnouncementDelay; }
-    int finalCountdownDelay() const { return this->FinalCountdownDelay; }
-    bool firstAnnouncement() const { return this->FirstAnnouncement; }
-    bool secondAnnouncement() const { return this->SecondAnnouncement; }
-    bool thirdAnnouncement() const { return this->ThirdAnnouncement; }
-    bool finalCountdown() const { return this->FinalCountdown; }
-    QString sound() const { return this->Sound; }
+    QString message() const { return Message; }
+    QTime timecode() const { return Timecode; }
+    QString sound() const { return Sound; }
+    int countdown() const { return Countdown; }
+    QList<QTime> announcements() const { return Announcements; }
 
-    // Setter
-    void setData(QString message, QTime timecode, QTime firstd, QTime secondd, QTime thirdd, int finald, bool first, bool second,
-                 bool third, bool final, QString sound);
+    // Setters
+    void setData(QString message, QTime timecode);
+    void setData(QString message, QTime timecode, QString sound, int countdown, QList<QTime> announcements);
 
     // Shortcut used to display announcement status in a table
-    bool hasAnnounce() const { return firstAnnouncement() || secondAnnouncement() || thirdAnnouncement() || finalCountdown(); }
+    bool hasAnnounce() const { return !Announcements.isEmpty() || (Countdown != 0); }
 
 private:
-    QString Message;          // Text displayed and read
-    QTime Timecode;           // Time where event is triggered
-    QTime FirstAnnouncementDelay; // Some delays before the announcement. May be not null even if the corresponding boolean is true
-    QTime SecondAnnouncementDelay;
-    QTime ThirdAnnouncementDelay;
-    int FinalCountdownDelay; // Countdown announcmente, in seconds
-    bool FirstAnnouncement;  // True if the announcement must be emitted
-    bool SecondAnnouncement;
-    bool ThirdAnnouncement;
-    bool FinalCountdown;
-    QString Sound;
+    // Core
+    QString Message; // Text displayed and read
+    QTime Timecode;  // Time where event is triggered
+
+    // Announcements
+    QString Sound;              // Sound played for announcements
+    int Countdown;              // Countdown announcement, in seconds. 0 means no countdown
+    QList<QTime> Announcements; // Delays between announcements and event trigger
 };
 
 // Serialization

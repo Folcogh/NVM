@@ -1,57 +1,55 @@
 #include "Event.hpp"
 #include <QDataStream>
 
-//  setData
+//  setData (without announcement)
 //
-// Fill an event with data. Used on event creation, modification, or when its read from a file
+// Fill an event with data. Used on event creation, modification, or when its read from a file0
 //
-void Event::setData(QString message, QTime timecode, QTime firstd, QTime secondd, QTime thirdd, int finald, bool first, bool second,
-                    bool third, bool final, QString sound)
+void Event::setData(QString message, QTime timecode)
 {
-    this->Message                 = message;
-    this->Timecode                = timecode;
-    this->FirstAnnouncementDelay  = firstd;
-    this->SecondAnnouncementDelay = secondd;
-    this->ThirdAnnouncementDelay  = thirdd;
-    this->FinalCountdownDelay     = finald;
-    this->FirstAnnouncement       = first;
-    this->SecondAnnouncement      = second;
-    this->ThirdAnnouncement       = third;
-    this->FinalCountdown          = final;
-    this->Sound                   = sound;
+    this->Message       = message;
+    this->Timecode      = timecode;
+    this->Sound         = QString();
+    this->Countdown     = 0;
+    this->Announcements = QList<QTime>();
+}
+
+//  setData (with announcement)
+//
+// Fill an event with data. Used on event creation, modification, or when its read from a file0
+//
+void Event::setData(QString message, QTime timecode, QString sound, int countdown, QList<QTime> announcements)
+{
+    this->Message       = message;
+    this->Timecode      = timecode;
+    this->Sound         = sound;
+    this->Countdown     = countdown;
+    this->Announcements = announcements;
 }
 
 //  <<
 //
-// Write an event into a stream. Stream status not checked
+// Write an event into a stream. Stream status is not checked
 //
 QDataStream& operator<<(QDataStream& stream, const Event& event)
 {
-    stream << event.message() << event.timecode() << event.firstAnnouncementDelay() << event.secondAnnouncementDelay()
-           << event.thirdAnnouncementDelay() << event.finalCountdownDelay() << event.firstAnnouncement() << event.secondAnnouncement()
-           << event.thirdAnnouncement() << event.finalCountdown() << event.sound();
+    stream << event.message() << event.timecode() << event.sound() << event.countdown() << event.announcements();
     return stream;
 }
 
 //  >>
 //
-// Read an event from a stream. Stream status not checked
+// Read an event from a stream. Stream status is not checked
 //
 QDataStream& operator>>(QDataStream& stream, Event& event)
 {
     QString message;
     QTime timecode;
-    QTime firstd;
-    QTime secondd;
-    QTime thirdd;
-    int finald;
-    bool first;
-    bool second;
-    bool third;
-    bool final;
     QString sound;
+    int countdown;
+    QList<QTime> announcements;
 
-    stream >> message >> timecode >> firstd >> secondd >> thirdd >> finald >> first >> second >> third >> final >> sound;
-    event.setData(message, timecode, firstd, secondd, thirdd, finald, first, second, third, final, sound);
+    stream >> message >> timecode >> sound >> countdown >> announcements;
+    event.setData(message, timecode, sound, countdown, announcements);
     return stream;
 }
