@@ -50,7 +50,7 @@ signals:
 
 // Column definition
 #define COLUMN_TIMECODE 0
-#define COLUMN_ANNOUNCE 1
+#define COLUMN_ANNOUNCEMENT 1
 #define COLUMN_MESSAGE 2
 
 #endif // EDITCINESCENIE_HPP

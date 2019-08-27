@@ -292,18 +292,18 @@ void EditCinescenie::addEvent(Event* event)
     ui->TableEvents->setRowCount(row + 1);
 
     // Create items
-    QTableWidgetItem* timecode = new QTableWidgetItem;
-    QTableWidgetItem* announce = new QTableWidgetItem;
-    QTableWidgetItem* text     = new QTableWidgetItem;
+    QTableWidgetItem* timecode     = new QTableWidgetItem;
+    QTableWidgetItem* announcement = new QTableWidgetItem;
+    QTableWidgetItem* text         = new QTableWidgetItem;
 
     // Configure items
     timecode->setData(Qt::UserRole, QVariant::fromValue(event));
     timecode->setTextAlignment(Qt::AlignCenter);
-    announce->setTextAlignment(Qt::AlignCenter);
+    announcement->setTextAlignment(Qt::AlignCenter);
 
     // Insert items in the table
     ui->TableEvents->setItem(row, COLUMN_TIMECODE, timecode);
-    ui->TableEvents->setItem(row, COLUMN_ANNOUNCE, announce);
+    ui->TableEvents->setItem(row, COLUMN_ANNOUNCEMENT, announcement);
     ui->TableEvents->setItem(row, COLUMN_MESSAGE, text);
 
     // Update items
@@ -383,6 +383,6 @@ void EditCinescenie::updateUI()
 void EditCinescenie::updateEventDisplay(int row)
 {
     ui->TableEvents->item(row, COLUMN_TIMECODE)->setText(nvmEvent(row)->timecode().toString());
-    ui->TableEvents->item(row, COLUMN_ANNOUNCE)->setText(nvmEvent(row)->hasAnnounce() ? tr("oui") : tr("non"));
+    ui->TableEvents->item(row, COLUMN_ANNOUNCEMENT)->setText(nvmEvent(row)->hasAnnounce() ? tr("oui") : tr("non"));
     ui->TableEvents->item(row, COLUMN_MESSAGE)->setText(nvmEvent(row)->message());
 }
