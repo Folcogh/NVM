@@ -80,6 +80,7 @@ EditEvent::EditEvent(QWidget* parent, Event* event)
         ui->ComboSound, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::currentTextChanged), [this]() { comboTextChanged(); });
     connect(
         ui->SpinboxFinalCountdown, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [this]() { this->EventModified = true; });
+    connect(ui->BoxAnnouncement, &QGroupBox::toggled, [this]() { this->EventModified = true; });
 }
 
 EditEvent::~EditEvent()

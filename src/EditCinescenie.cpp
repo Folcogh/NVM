@@ -188,6 +188,7 @@ void EditCinescenie::buttonDeleteEventClicked()
     delete nvmEvent(row);
     ui->TableEvents->removeRow(row);
 
+    this->FileModified = true;
     updateUI();
 }
 

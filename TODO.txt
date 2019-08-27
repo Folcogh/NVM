@@ -13,6 +13,7 @@ TODO
 - add a checkbox "display events timecode" in the ExecCinescenie screen
 - prevent from creating/editing an event without text and timecode (use [OK] adjustment)
 - sort values in event announcements edition dialog
+- prevent the app to close when a Cinescenie is edited and modified, or is running
 
 
 Text to speech

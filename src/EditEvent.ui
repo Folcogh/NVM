@@ -229,7 +229,11 @@
           </layout>
          </item>
          <item>
-          <widget class="QListWidget" name="ListAnnouncement"/>
+          <widget class="QListWidget" name="ListAnnouncement">
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
