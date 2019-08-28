@@ -99,10 +99,11 @@ void ExecCinescenie::buttonCloseClicked()
                                   tr("Voulez-vous vraiment quitter pendant qu'une cinéscénie est en cours ?")) == QMessageBox::No) {
             return;
         }
-    }
 
-    killTimer(this->TimerID);
-    this->Started = false;
+        // Else kill the timer
+        killTimer(this->TimerID);
+        this->Started = false;
+    }
 
     emit execCinescenieClosed();
 }
