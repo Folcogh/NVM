@@ -1,6 +1,7 @@
 #include "ExecCinescenie.hpp"
 #include "Nvm.hpp"
 #include "ui_ExecCinescenie.h"
+#include <QCheckBox>
 #include <QDataStream>
 #include <QFile>
 #include <QMessageBox>
@@ -16,6 +17,7 @@ ExecCinescenie::ExecCinescenie(QWidget *parent) :
     // Button connections
     connect(ui->ButtonStart, &QPushButton::clicked, [this]() { buttonStartClicked(); });
     connect(ui->ButtonClose, &QPushButton::clicked, [this]() { buttonCloseClicked(); });
+    connect(ui->CheckboxDisplayTimecode, &QCheckBox::toggled, [this]() { checkboxDisplayTimecodeToggled(); });
 }
 
 ExecCinescenie::~ExecCinescenie()
@@ -82,8 +84,6 @@ bool ExecCinescenie::execCinescenie(QString filename)
     }
 
     // Update UI
-    ui->FrameDefineTimecode->setVisible(true);                      // Show the setting frame, allowing to set the timecode
-    ui->FrameEvent->setVisible(false);                              // Hide the event frame, used while the cinescenie is running
     ui->LabelCinescenieName->setText(filename);                     // Set the filename of the current cinescenie
     ui->ButtonStart->setDisabled(ui->TableEvents->rowCount() == 0); // Forbid to start the cinescenie if the event table is empty
 
@@ -100,6 +100,9 @@ void ExecCinescenie::buttonCloseClicked()
             return;
         }
     }
+
+    killTimer(this->TimerID);
+    this->Started = false;
 
     emit execCinescenieClosed();
 }
@@ -126,20 +129,18 @@ void ExecCinescenie::buttonStartClicked()
         return;
     }
 
-    // UI
-    ui->FrameDefineTimecode->setVisible(false);
-    ui->FrameEvent->setVisible(true);
-
     // UI settings. Use the first event to initialize display
-    ui->LabelNextEventName->setText(nvmEvent(0)->message());
-    ui->LabelCurrentTimecode->setText(ui->EditTimecode->time().toString());
+    ui->ButtonStart->setEnabled(false);
+
+    // Save the initial Time Code, to compute the current one in the timer event handler
+    this->InitialTimecode = ui->EditTimecode->time();
 }
 
 void ExecCinescenie::timerEvent(QTimerEvent*)
 {
     // Update current timecode
-    QTime CurrentTC = ui->EditTimecode->time().addMSecs(this->StartTime.elapsed());
-    ui->LabelCurrentTimecode->setText(CurrentTC.toString());
+    QTime CurrentTC = this->InitialTimecode.addMSecs(this->StartTime.elapsed());
+    ui->EditTimecode->setTime(CurrentTC);
 
     // Update remaining time for each event
     // If an event is done, register it for removal
@@ -154,12 +155,6 @@ void ExecCinescenie::timerEvent(QTimerEvent*)
         // Display remaining time if it's valid, else prepare event for removal
         if (remaining.isValid()) {
             ui->TableEvents->item(row, COLUMN_REMAINING)->setText(remaining.toString());
-
-            // Update remaining event in the event frame
-            if (row == 0) {
-                ui->LabelNextEventRemaining->setText(remaining.toString());
-                ui->LabelNextEventName->setText(nvmEvent(0)->message());
-            }
         }
         else {
             ToBeRemoved++;
@@ -174,7 +169,17 @@ void ExecCinescenie::timerEvent(QTimerEvent*)
 
     // Stop cinescenie execution if all events are in the past
     if (ui->TableEvents->rowCount() == 0) {
-        this->Started = false;
         killTimer(this->TimerID);
+        this->Started = false;
+    }
+}
+
+void ExecCinescenie::checkboxDisplayTimecodeToggled()
+{
+    if (ui->CheckboxDisplayTimecode->isChecked()) {
+        ui->TableEvents->showColumn(COLUMN_TIMECODE);
+    }
+    else {
+        ui->TableEvents->hideColumn(COLUMN_TIMECODE);
     }
 }

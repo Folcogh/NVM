@@ -10,9 +10,7 @@ TODO
 - improve QTimeEdit widget
 - button icons, see https://joekuan.wordpress.com/2015/09/23/list-of-qt-icons/
 - tab order of UI
-- add a checkbox "display events timecode" in the ExecCinescenie screen
 - prevent from creating/editing an event without text and timecode (use [OK] adjustment)
-- sort values in event announcements edition dialog
 - prevent the app to close when a Cinescenie is edited and modified, or is running
 
 

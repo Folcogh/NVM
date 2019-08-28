@@ -107,82 +107,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="FrameEvent">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QLabel" name="LabelNextEvent">
-        <property name="text">
-         <string>Prochain évènement :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="LabelNextEventRemaining">
-        <property name="text">
-         <string>NextEventRemaining</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="HSpacerEvent">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>10</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QLabel" name="LabelNextEventName">
-        <property name="text">
-         <string>NextEventName</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="HSpacerEvent2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QLabel" name="LabelTimecode">
-        <property name="text">
-         <string>Time code :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="LabelCurrentTimecode">
-        <property name="text">
-         <string>CurrentTimeCode</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QTableWidget" name="TableEvents">
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
@@ -215,6 +139,16 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="HLayoutVocalAnnouncement">
+     <item>
+      <widget class="QCheckBox" name="CheckboxDisplayTimecode">
+       <property name="text">
+        <string>Afficher les time codes</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="HSpacerVocalAnnouncement">
        <property name="orientation">
