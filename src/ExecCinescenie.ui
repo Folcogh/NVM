@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>549</width>
-    <height>385</height>
+    <width>942</width>
+    <height>308</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -103,6 +103,36 @@
         </property>
        </spacer>
       </item>
+      <item>
+       <widget class="QCheckBox" name="CheckboxDisplayTimecode">
+        <property name="text">
+         <string>Afficher les time codes</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="CheckboxVocalAnnouncement">
+        <property name="text">
+         <string>Activer les annonces vocales</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -125,6 +155,9 @@
      <attribute name="horizontalHeaderStretchLastSection">
       <bool>true</bool>
      </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
      <column>
       <property name="text">
        <string>Time code</string>
@@ -141,40 +174,6 @@
       </property>
      </column>
     </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="HLayoutVocalAnnouncement">
-     <item>
-      <widget class="QCheckBox" name="CheckboxDisplayTimecode">
-       <property name="text">
-        <string>Afficher les time codes</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="HSpacerVocalAnnouncement">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="CheckboxVocalAnnouncement">
-       <property name="text">
-        <string>Activer les annonces vocales</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>
