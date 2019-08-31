@@ -24,6 +24,7 @@ private:
     QTime StartTime;
     QTime InitialTimecode;
     int TimerID;
+    int CurrentEvent;
 
     inline Event* nvmEvent(int row) const;
     void deleteEvents();
@@ -38,9 +39,9 @@ signals:
 };
 
 // Column definition
-#define COLUMN_TIMECODE 0
-#define COLUMN_REMAINING 1
-#define COLUMN_MESSAGE 2
+#define EXEC_COLUMN_TIMECODE 0
+#define EXEC_COLUMN_REMAINING 1
+#define EXEC_COLUMN_MESSAGE 2
 
 // Interval of refresh timer (in ms)
 #define INTERVAL_UI_TIMER 200

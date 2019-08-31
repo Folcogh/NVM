@@ -12,6 +12,10 @@ TODO
 - tab order of UI
 - prevent from creating/editing an event without text and timecode (use [OK] adjustment)
 - prevent the app to close when a Cinescenie is edited and modified, or is running
+- don't delete done events, just gray them
+- prevent from starting a scinescenie with a timecode greater than the greatest event timecode
+- optimize TimerEvent, no need to parse done events$
+- disable the Start button in ExecCinescenie if the cinescenie is empty
 
 
 Text to speech

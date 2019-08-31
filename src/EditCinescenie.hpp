@@ -49,8 +49,8 @@ signals:
 };
 
 // Column definition
-#define COLUMN_TIMECODE 0
-#define COLUMN_ANNOUNCEMENT 1
-#define COLUMN_MESSAGE 2
+#define EDIT_COLUMN_TIMECODE 0
+#define EDIT_COLUMN_ANNOUNCEMENT 1
+#define EDIT_COLUMN_MESSAGE 2
 
 #endif // EDITCINESCENIE_HPP

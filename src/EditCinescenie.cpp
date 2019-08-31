@@ -278,7 +278,7 @@ bool EditCinescenie::save(QString filename)
 //
 Event* EditCinescenie::nvmEvent(int row) const
 {
-    return ui->TableEvents->item(row, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
+    return ui->TableEvents->item(row, EDIT_COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
 }
 
 //  addEvent
@@ -302,9 +302,9 @@ void EditCinescenie::addEvent(Event* event)
     announcement->setTextAlignment(Qt::AlignCenter);
 
     // Insert items in the table
-    ui->TableEvents->setItem(row, COLUMN_TIMECODE, timecode);
-    ui->TableEvents->setItem(row, COLUMN_ANNOUNCEMENT, announcement);
-    ui->TableEvents->setItem(row, COLUMN_MESSAGE, text);
+    ui->TableEvents->setItem(row, EDIT_COLUMN_TIMECODE, timecode);
+    ui->TableEvents->setItem(row, EDIT_COLUMN_ANNOUNCEMENT, announcement);
+    ui->TableEvents->setItem(row, EDIT_COLUMN_MESSAGE, text);
 
     // Update items
     updateEventDisplay(row);
@@ -340,7 +340,7 @@ void EditCinescenie::deleteEvents()
 void EditCinescenie::updateUI()
 {
     // Sort the table, based on time code
-    ui->TableEvents->sortItems(COLUMN_TIMECODE);
+    ui->TableEvents->sortItems(EDIT_COLUMN_TIMECODE);
 
     // Update table buttons
     if (ui->TableEvents->selectedItems().isEmpty()) {
@@ -382,7 +382,7 @@ void EditCinescenie::updateUI()
 //
 void EditCinescenie::updateEventDisplay(int row)
 {
-    ui->TableEvents->item(row, COLUMN_TIMECODE)->setText(nvmEvent(row)->timecode().toString());
-    ui->TableEvents->item(row, COLUMN_ANNOUNCEMENT)->setText(nvmEvent(row)->hasAnnounce() ? tr("oui") : tr("non"));
-    ui->TableEvents->item(row, COLUMN_MESSAGE)->setText(nvmEvent(row)->message());
+    ui->TableEvents->item(row, EDIT_COLUMN_TIMECODE)->setText(nvmEvent(row)->timecode().toString());
+    ui->TableEvents->item(row, EDIT_COLUMN_ANNOUNCEMENT)->setText(nvmEvent(row)->hasAnnounce() ? tr("oui") : tr("non"));
+    ui->TableEvents->item(row, EDIT_COLUMN_MESSAGE)->setText(nvmEvent(row)->message());
 }

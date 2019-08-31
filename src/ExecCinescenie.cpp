@@ -35,7 +35,7 @@ void ExecCinescenie::deleteEvents()
 
 Event* ExecCinescenie::nvmEvent(int row) const
 {
-    return ui->TableEvents->item(row, COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
+    return ui->TableEvents->item(row, EXEC_COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
 }
 
 bool ExecCinescenie::execCinescenie(QString filename)
@@ -72,9 +72,9 @@ bool ExecCinescenie::execCinescenie(QString filename)
         // Add a row and put items
         int row = ui->TableEvents->rowCount();
         ui->TableEvents->setRowCount(row + 1);
-        ui->TableEvents->setItem(row, COLUMN_TIMECODE, timecode);
-        ui->TableEvents->setItem(row, COLUMN_REMAINING, remaining);
-        ui->TableEvents->setItem(row, COLUMN_MESSAGE, message);
+        ui->TableEvents->setItem(row, EXEC_COLUMN_TIMECODE, timecode);
+        ui->TableEvents->setItem(row, EXEC_COLUMN_REMAINING, remaining);
+        ui->TableEvents->setItem(row, EXEC_COLUMN_MESSAGE, message);
 
         // Check if the stream is alive
         if (stream.status() != QDataStream::Ok) {
@@ -118,13 +118,16 @@ void ExecCinescenie::buttonStartClicked()
     // - triggers could happen at start if we compare timecodes with <=
     // - triggers could be skipped in case of lag, if we compare timecodes with ==
     // So we compare them with <=, but discard at start the ones which are "in the past"
-    while ((ui->TableEvents->rowCount() != 0) && (nvmEvent(0)->timecode() < ui->EditTimecode->time())) {
-        delete nvmEvent(0);
-        ui->TableEvents->removeRow(0);
+    this->CurrentEvent = 0;
+    for (int row = 0; row < ui->TableEvents->rowCount(); row++) {
+        if (nvmEvent(row)->timecode() <= ui->EditTimecode->time()) {
+            ui->TableEvents->item(row, EXEC_COLUMN_REMAINING)->setText(tr("--"));
+            this->CurrentEvent++;
+        }
     }
 
-    // Safety check: if all events have been removed, we can't continue
-    if (ui->TableEvents->rowCount() == 0) {
+    // Safety check: if all events have been removed, or if all are in the past, we can't continue
+    if (ui->TableEvents->rowCount() == this->CurrentEvent) {
         killTimer(this->TimerID);
         this->Started = false;
         return;
@@ -139,14 +142,15 @@ void ExecCinescenie::buttonStartClicked()
 
 void ExecCinescenie::timerEvent(QTimerEvent*)
 {
+
     // Update current timecode
     QTime CurrentTC = this->InitialTimecode.addMSecs(this->StartTime.elapsed());
     ui->EditTimecode->setTime(CurrentTC);
 
     // Update remaining time for each event
     // If an event is done, register it for removal
-    int ToBeRemoved = 0;
-    for (int row = 0; row < ui->TableEvents->rowCount(); row++) {
+    bool CurrentEventFound = false;
+    for (int row = this->CurrentEvent; row < ui->TableEvents->rowCount(); row++) {
         int seconds = CurrentTC.secsTo(nvmEvent(row)->timecode());
         int h       = seconds / 3600;
         int m       = (seconds % 3600) / 60;
@@ -155,21 +159,19 @@ void ExecCinescenie::timerEvent(QTimerEvent*)
 
         // Display remaining time if it's valid, else prepare event for removal
         if (remaining.isValid()) {
-            ui->TableEvents->item(row, COLUMN_REMAINING)->setText(remaining.toString());
+            ui->TableEvents->item(row, EXEC_COLUMN_REMAINING)->setText(remaining.toString());
+            if (!CurrentEventFound) {
+                CurrentEventFound = true;
+            }
         }
         else {
-            ToBeRemoved++;
+            ui->TableEvents->item(row, EXEC_COLUMN_REMAINING)->setText(tr("--"));
+            this->CurrentEvent++;
         }
-    }
-
-    // Remove done events
-    for (; ToBeRemoved > 0; ToBeRemoved--) {
-        delete nvmEvent(0);
-        ui->TableEvents->removeRow(0);
     }
 
     // Stop cinescenie execution if all events are in the past
-    if (ui->TableEvents->rowCount() == 0) {
+    if (ui->TableEvents->rowCount() == this->CurrentEvent) {
         killTimer(this->TimerID);
         this->Started = false;
     }
@@ -178,9 +180,9 @@ void ExecCinescenie::timerEvent(QTimerEvent*)
 void ExecCinescenie::checkboxDisplayTimecodeToggled()
 {
     if (ui->CheckboxDisplayTimecode->isChecked()) {
-        ui->TableEvents->showColumn(COLUMN_TIMECODE);
+        ui->TableEvents->showColumn(EXEC_COLUMN_TIMECODE);
     }
     else {
-        ui->TableEvents->hideColumn(COLUMN_TIMECODE);
+        ui->TableEvents->hideColumn(EXEC_COLUMN_TIMECODE);
     }
 }
