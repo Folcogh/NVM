@@ -2,7 +2,6 @@ TODO
 ----
 
 - dark theme
-- open nvm file from OS. Set the default directory according to the file directory?
 - in EditEvent, replace setText() for missing sound warning by a more elegant way based on setVisible()
 - in EditEvent, replace filename building with visible/invisble labels?
 - make timecode adjustable in ExecCinescenie
@@ -13,7 +12,7 @@ TODO
 - prevent the app to close when a Cinescenie is edited and modified, or is running
 - prevent from starting a scinescenie with a timecode greater than the greatest event timecode
 - use colors to group events
-- add takeoff to adjoint listS
+- add takeoff to adjoint lists
 - add GMT to event list
 - event feedback
 - font size modification

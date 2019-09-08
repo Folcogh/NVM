@@ -28,9 +28,6 @@ private:
     EditCinescenie* WidgetEdit;
     ExecCinescenie* WidgetExec;
 
-    // Default directory for file opening
-    QString DefaultDirectory;
-
     // Methods
     QString requestCinescenieFile(QString title);
     void displayChoice();

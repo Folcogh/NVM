@@ -1,10 +1,10 @@
 #include "EditCinescenie.hpp"
+#include "DefaultPath.hpp"
 #include "EditEvent.hpp"
 #include "Nvm.hpp"
 #include "ui_EditCinescenie.h"
 #include <QCheckBox>
 #include <QDataStream>
-#include <QDir>
 #include <QFile>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -18,7 +18,6 @@
 EditCinescenie::EditCinescenie(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::EditCinescenie)
-    , DefaultDirectory(QDir::homePath())
 {
     ui->setupUi(this);
 
@@ -219,8 +218,8 @@ bool EditCinescenie::buttonSaveClicked()
 bool EditCinescenie::buttonSaveAsClicked()
 {
     // Get a new file name where the cinescenie should be saved. Quit if the user cancelled saving
-    QString filename =
-        QFileDialog::getSaveFileName(this, tr("Enregistrer la cinéscénie"), this->DefaultDirectory, "Cinéscénie (*." FILE_EXTENSION ")");
+    QString filename = QFileDialog::getSaveFileName(
+        this, tr("Enregistrer la cinéscénie"), DefaultPath::instance()->defaultPath(), "Cinéscénie (*." FILE_EXTENSION ")");
     if (filename.isEmpty()) {
         return false;
     }
@@ -230,7 +229,7 @@ bool EditCinescenie::buttonSaveAsClicked()
     if (ret) {
         this->FileModified     = false;
         this->Filename         = filename;
-        this->DefaultDirectory = QFileInfo(filename).canonicalPath();
+        DefaultPath::instance()->setDefaultPath(filename);
     }
     // Else display an error message
     else {

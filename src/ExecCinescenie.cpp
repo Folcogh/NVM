@@ -38,7 +38,7 @@ Event* ExecCinescenie::nvmEvent(int row) const
     return ui->TableEvents->item(row, EXEC_COLUMN_TIMECODE)->data(EVENT_ROLE).value<Event*>();
 }
 
-bool ExecCinescenie::execCinescenie(QString filename)
+bool ExecCinescenie::loadCinescenie(QString filename)
 {
     // Delete the previous cinescenie if one existed before
     deleteEvents();

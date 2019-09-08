@@ -28,7 +28,6 @@ private:
     Ui::EditCinescenie* ui;
     bool FileModified;
     QString Filename;
-    QString DefaultDirectory;
 
     inline Event* nvmEvent(int row) const; // Return a pointer of the event of a given row
     void addEvent(Event* event);           // Add an event to the table

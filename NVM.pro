@@ -26,6 +26,7 @@ CONFIG += c++14
 
 SOURCES += \
         src/AnnouncementSound.cpp \
+        src/DefaultPath.cpp \
         src/EditCinescenie.cpp \
         src/EditEvent.cpp \
         src/Event.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
 
 HEADERS += \
         src/AnnouncementSound.hpp \
+        src/DefaultPath.hpp \
         src/EditCinescenie.hpp \
         src/EditEvent.hpp \
         src/Event.hpp \

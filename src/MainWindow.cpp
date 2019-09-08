@@ -1,16 +1,15 @@
 #include "MainWindow.hpp"
+#include "DefaultPath.hpp"
 #include "Nvm.hpp"
 #include "ui_MainWindow.h"
 #include <QCommandLinkButton>
 #include <QFileDialog>
-#include <QFileInfo>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , WidgetEdit(new EditCinescenie)
     , WidgetExec(new ExecCinescenie)
-    , DefaultDirectory(QDir::homePath())
 {
     ui->setupUi(this);
 
@@ -45,9 +44,12 @@ MainWindow::~MainWindow()
 void MainWindow::loadCinescenie(QString filename)
 {
     // Try to open it, display it in case of success
-    if (this->WidgetExec->execCinescenie(filename)) {
+    if (this->WidgetExec->loadCinescenie(filename)) {
         this->WidgetExec->setVisible(true);
         ui->WidgetChoice->setVisible(false);
+
+        // Save default path
+        DefaultPath::instance()->setDefaultPath(filename);
     }
 }
 
@@ -98,11 +100,12 @@ void MainWindow::modifyCinescenieTriggered()
 QString MainWindow::requestCinescenieFile(QString title)
 {
     // Prompt for the file to load
-    QString filename = QFileDialog::getOpenFileName(this, title, DefaultDirectory, tr("Fichier de cinéscénie (*." FILE_EXTENSION ")"));
+    QString filename = QFileDialog::getOpenFileName(
+        this, title, DefaultPath::instance()->defaultPath(), tr("Fichier de cinéscénie (*." FILE_EXTENSION ")"));
 
     // Save the current directory if a file were chosen
     if (!filename.isEmpty()) {
-        this->DefaultDirectory = QFileInfo(filename).canonicalPath();
+        DefaultPath::instance()->setDefaultPath(filename);
     }
 
     return filename;

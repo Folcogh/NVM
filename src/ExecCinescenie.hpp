@@ -16,7 +16,7 @@ class ExecCinescenie : public QWidget
 public:
     explicit ExecCinescenie(QWidget *parent = nullptr);
     ~ExecCinescenie();
-    bool execCinescenie(QString filename);
+    bool loadCinescenie(QString filename);
 
 private:
     Ui::ExecCinescenie* ui;

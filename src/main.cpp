@@ -1,7 +1,7 @@
+#include "AnnouncementSound.hpp"
+#include "DefaultPath.hpp"
 #include "MainWindow.hpp"
 #include <QApplication>
-
-#include "AnnouncementSound.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -18,5 +18,6 @@ int main(int argc, char *argv[])
 
     int ret = a.exec();
     AnnouncementSound::release();
+    DefaultPath::release();
     return ret;
 }
