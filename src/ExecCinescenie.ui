@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>942</width>
-    <height>308</height>
+    <width>1085</width>
+    <height>316</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,6 +25,11 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QLabel" name="LabelCinescenie">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Cinéscénie :</string>
         </property>
@@ -32,6 +37,11 @@
       </item>
       <item>
        <widget class="QLabel" name="LabelCinescenieName">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>CinescenieName</string>
         </property>
@@ -52,6 +62,11 @@
       </item>
       <item>
        <widget class="QPushButton" name="ButtonClose">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Fermer</string>
         </property>
@@ -71,6 +86,11 @@
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
        <widget class="QLabel" name="LabelDefineTimecode">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Définir le time code :</string>
         </property>
@@ -78,6 +98,11 @@
       </item>
       <item>
        <widget class="QTimeEdit" name="EditTimecode">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="displayFormat">
          <string>HH:mm:ss</string>
         </property>
@@ -85,6 +110,11 @@
       </item>
       <item>
        <widget class="QPushButton" name="ButtonStart">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Démarrer</string>
         </property>
@@ -105,6 +135,11 @@
       </item>
       <item>
        <widget class="QCheckBox" name="CheckboxDisplayTimecode">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Afficher les time codes</string>
         </property>
@@ -128,6 +163,11 @@
       </item>
       <item>
        <widget class="QCheckBox" name="CheckboxVocalAnnouncement">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Activer les annonces vocales</string>
         </property>
@@ -140,7 +180,7 @@
     <widget class="QTableWidget" name="TableEvents">
      <property name="font">
       <font>
-       <pointsize>12</pointsize>
+       <pointsize>14</pointsize>
       </font>
      </property>
      <property name="editTriggers">

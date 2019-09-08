@@ -35,6 +35,7 @@ private:
     void addAnnouncementClicked();
     void removeAnnouncementClicked();
     void listSelectionChanged();
+    void adjustOkButton();
 
     // Grab event data from the UI
     void readEventFromUI(Event* event);

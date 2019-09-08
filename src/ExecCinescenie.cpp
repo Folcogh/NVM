@@ -85,7 +85,7 @@ bool ExecCinescenie::execCinescenie(QString filename)
 
     // Update UI
     ui->LabelCinescenieName->setText(filename);                     // Set the filename of the current cinescenie
-    ui->ButtonStart->setDisabled(ui->TableEvents->rowCount() == 0); // Forbid to start the cinescenie if the event table is empty
+    ui->ButtonStart->setDisabled(ui->TableEvents->rowCount() == 0); // Forbid cinescenie execution if the event table is empty
 
     return true;
 }

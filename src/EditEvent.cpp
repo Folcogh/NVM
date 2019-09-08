@@ -39,6 +39,11 @@ EditEvent::EditEvent(QWidget* parent)
 
     // Connect announcements list widget
     connect(ui->ListAnnouncement, &QListWidget::itemSelectionChanged, [this] { listSelectionChanged(); });
+
+    // Disable the OK button in some cases
+    connect(ui->EditTimeCode, &QTimeEdit::timeChanged, [this]() { adjustOkButton(); });
+    connect(ui->LineeditEvent, &QLineEdit::textChanged, [this]() { adjustOkButton(); });
+    adjustOkButton();
 }
 
 //  EditEvent
@@ -176,4 +181,10 @@ void EditEvent::removeAnnouncementClicked()
 void EditEvent::listSelectionChanged()
 {
     ui->ButtonRemoveAnnouncement->setEnabled(!ui->ListAnnouncement->selectedItems().isEmpty());
+}
+
+// Disable OK button if text is empty or timecode is null
+void EditEvent::adjustOkButton()
+{
+    ui->ButtonOK->setDisabled(ui->LineeditEvent->text().isEmpty() || (ui->EditTimeCode->time() == QTime(0, 0, 0)));
 }
