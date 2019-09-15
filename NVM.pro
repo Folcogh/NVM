@@ -32,6 +32,7 @@ SOURCES += \
         src/Event.cpp \
         src/ExecCinescenie.cpp \
         src/MainWindow.cpp \
+        src/NTimeEdit.cpp \
         src/main.cpp
 
 HEADERS += \
@@ -42,13 +43,15 @@ HEADERS += \
         src/Event.hpp \
         src/ExecCinescenie.hpp \
         src/MainWindow.hpp \
+        src/NTimeEdit.hpp \
         src/Nvm.hpp
 
 FORMS += \
         src/EditCinescenie.ui \
         src/EditEvent.ui \
         src/ExecCinescenie.ui \
-        src/MainWindow.ui
+        src/MainWindow.ui \
+        src/NTimeEdit.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
